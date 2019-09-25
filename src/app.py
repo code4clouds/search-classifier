@@ -16,9 +16,10 @@ def bingSearch(client, categories, searchTerm):
     If the search response contains web pages, the first result's name and url
     are printed.
     '''
+    category_detected = {}
     if hasattr(web_data.web_pages, 'value'):
         print("\r\nSearched for {} returned {} results".format( searchTerm, len(web_data.web_pages.value)))
-        category_detected = {}
+        
         for web_page in web_data.web_pages.value:
             # print("First web page name: {} ".format(web_page.name))
             # print("First web page URL: {} ".format(web_page.url))
@@ -26,9 +27,12 @@ def bingSearch(client, categories, searchTerm):
             for key in categories:
                 for cat_term in categories[key]:
                     if cat_term in web_page.snippet.lower():
-                        category_detected[key] = 0
+                        if key in category_detected:
+                            category_detected[key] += 1
+                        else :
+                            category_detected[key] = 1
         for key_category in category_detected:
-            print("Category: {} ".format(key_category))    
+            print("Category: {} {} ".format(key_category, category_detected[key_category]))    
     else:
         print("Didn't find any web pages...")
 
@@ -47,7 +51,7 @@ def main():
     client = WebSearchAPI(CognitiveServicesCredentials(SC_KEY), base_url = SC_ENDPOINT)
 
     categories = { 'data': [ 'data', 'operating system', 'container', 'dell', 'emc', 'networking', 'virtualization', 'db', 'database', 'relational', 'erp'],
-                    'ml' : [ 'machine learning', 'ml', 'intelligence', 'artificial'],
+                    'ml' : [ 'machine learning', 'ml', 'intelligence', 'artificial', 'science'],
                     'storage': ['storage', 'dell', 'emc', 'nas'],
                     'iot': ['iot', 'thing', 'internet of things','thermostat','bluetooth','modem', 'hardware', 'camera'],
                     'devops': ['devops', 'code', 'pipeline', 'api', 'kubernetes', 'k8s', 'gaming'],
@@ -62,19 +66,24 @@ def main():
     colA = ws['A']
 
     # Add Column for category in the sheet
-    ws.insert_cols(2)
+    ws.insert_cols(2,2)
     ws['B1'] = 'Categories'
+    ws['C1'] = 'Categories'
 
     # Search the tem and add it to the column starting at row B2
-    for index, row in enumerate(colA[1:300], start = 2):
+    for index, row in enumerate(colA[1:14176], start = 2):
         categories_found = bingSearch(client, categories, row.value)
         category_csv = ''
-        for category in categories_found:
+        for category in sorted(categories_found, key=categories_found.get):
             category_csv = category_csv + ',' + category
-        ws['B' + str(index)] = category_csv
+        ws['C' + str(index)] = category_csv
+        ws['B' + str(index)] = category
+        print("MAX: " + category)
         index += 1
     
     wb.save(filename = 'output.xlsx')
 
 if __name__ == "__main__":
     main()
+
+# TODO: Show only the most use category
