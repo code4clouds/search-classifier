@@ -13,5 +13,10 @@ This is a Python application that takes an xlsx file with column A full of terms
 
 ``` bash
 pip install -r requirements
+```
+
+## Execution
+
+``` bash
 python src/app.py
 ```
