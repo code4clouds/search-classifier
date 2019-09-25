@@ -8,7 +8,6 @@ import os
 
 # Make a request. Replace Yosemite if you'd like.
 def bingSearch(client, categories, searchTerm): 
-    # searchTerm = "Dell"
     web_data = client.web.search(query=searchTerm)
 
     '''
@@ -44,15 +43,12 @@ def main():
     SC_ENDPOINT = os.environ['SC_ENDPOINT']
     SC_KEY = os.environ['SC_KEY']
 
-    # Replace with your subscription key.
-    subscription_key = "YOUR_SUBSCRIPTION_KEY"
-
     # Instantiate the client and replace with your endpoint.
     client = WebSearchAPI(CognitiveServicesCredentials(SC_KEY), base_url = SC_ENDPOINT)
 
     categories = { 'data': [ 'data', 'operating system', 'container', 'dell', 'emc', 'networking', 'virtualization', 'db', 'database', 'relational', 'erp'],
                     'ml' : [ 'machine learning', 'ml', 'intelligence', 'artificial', 'science'],
-                    'storage': ['storage', 'dell', 'emc', 'nas'],
+                    'storage': ['storage', 'nas'],
                     'iot': ['iot', 'thing', 'internet of things','thermostat','bluetooth','modem', 'hardware', 'camera'],
                     'devops': ['devops', 'code', 'pipeline', 'api', 'kubernetes', 'k8s', 'gaming'],
                     'securty': ['cissp', 'hacker', 'security','defense', 'keys', 'privacy', 'virus', 'anti-virus'],
@@ -86,4 +82,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-# TODO: Show only the most use category
