@@ -63,7 +63,7 @@ def main():
 
     # Add Column for category in the sheet
     ws.insert_cols(2,2)
-    ws['B1'] = 'Categories'
+    ws['B1'] = 'Top_Category'
     ws['C1'] = 'Categories'
 
     # Search the tem and add it to the column starting at row B2
